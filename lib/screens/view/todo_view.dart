@@ -39,66 +39,98 @@ class _HomeViewState extends ConsumerState<HomeView> {
               child: CircularProgressIndicator(),
             ) // Show loading indicator
           : Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IntrinsicHeight(
-                    child: Row(
+              child: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth <= 900) {
+                  return SingleChildScrollView(
+                    child: Column(
                       children: [
-                        formSteps[submissionVieew.currentIndex].formWidgetBuilder(ref),
                         SizedBox(
-                          width: 400,
-                          child: Card(
-                            margin: const EdgeInsets.all(18),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    child: Column(
-                                      children: List.generate(
-                                        formSteps.length,
-                                        (index) => CustomeListTile(
-                                          count: "${index + 1}",
-                                          title: formSteps[index].title,
-                                          subtitle: formSteps[index].label,
-                                          selected: index == submissionVieew.currentIndex,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  const Text("Need Help?"),
-                                  const Text(
-                                    "Get to know how your campaign",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  const Text(
-                                    "Can reach a wide audience",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  const CustomButton(
-                                    text: "Contact Us",
-                                    borderSideColor: Colors.black,
-                                    textColor: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          height: 700,
+                          child: SideBarWidget(submissionVieew: submissionVieew),
+                        ),
+                        SizedBox(
+                          height: 700,
+                          child: formSteps[submissionVieew.currentIndex].formWidgetBuilder(ref),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          formSteps[submissionVieew.currentIndex].formWidgetBuilder(ref),
+                          SideBarWidget(submissionVieew: submissionVieew),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ),
+    );
+  }
+}
+
+class SideBarWidget extends StatelessWidget {
+  const SideBarWidget({
+    super.key,
+    required this.submissionVieew,
+  });
+
+  final SubmissionState submissionVieew;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 400,
+      child: Card(
+        margin: const EdgeInsets.all(18),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                child: Column(
+                  children: List.generate(
+                    formSteps.length,
+                    (index) => CustomeListTile(
+                      count: "${index + 1}",
+                      title: formSteps[index].title,
+                      subtitle: formSteps[index].label,
+                      selected: index == submissionVieew.currentIndex,
+                    ),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              const Text("Need Help?"),
+              const Text(
+                "Get to know how your campaign",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+              const Text(
+                "Can reach a wide audience",
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 15),
+              const CustomButton(
+                text: "Contact Us",
+                borderSideColor: Colors.black,
+                textColor: Colors.black,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
