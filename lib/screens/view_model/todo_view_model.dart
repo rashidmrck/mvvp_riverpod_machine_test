@@ -55,22 +55,46 @@ class SubmissionViewModel extends StateNotifier<SubmissionState> {
       String? token = await SharedPreferenceService.getToken();
       if (token != null) {
         List<dynamic> jsonData = jsonDecode(token);
-        List<Submission> loadedSubmissions = jsonData.map((item) => Submission.fromJson(item)).toList();
-        // Update state with the loaded submissions and set isLoading to false
-        state = SubmissionState(
-            submissions: loadedSubmissions, isLoading: false, currentIndex: loadedSubmissions.length - 1);
+        if (jsonData.isNotEmpty) {
+          List<Submission> loadedSubmissions = jsonData.map((item) => Submission.fromJson(item)).toList();
+          // Update state with the loaded submissions and set isLoading to false
+          state = SubmissionState(
+            submissions: loadedSubmissions,
+            isLoading: false,
+            currentIndex: loadedSubmissions.length - 1,
+            customAudience: loadedSubmissions[loadedSubmissions.length - 1].customAudience,
+            runOnlyOncePerCustomer: loadedSubmissions[loadedSubmissions.length - 1].runOnlyOncePerCustomer,
+          );
 
-        _subjectController.text = state.submissions[state.currentIndex].subject;
-        _previewTextController.text = state.submissions[state.currentIndex].previewText;
-        _fromNameController.text = state.submissions[state.currentIndex].from;
-        _emailController.text = state.submissions[state.currentIndex].email;
+          _subjectController.text = state.submissions[state.currentIndex].subject;
+          _previewTextController.text = state.submissions[state.currentIndex].previewText;
+          _fromNameController.text = state.submissions[state.currentIndex].from;
+          _emailController.text = state.submissions[state.currentIndex].email;
+        } else {
+          state = SubmissionState(
+              submissions: state.submissions,
+              isLoading: false,
+              currentIndex: state.currentIndex,
+              customAudience: false,
+              runOnlyOncePerCustomer: false);
+        }
       } else {
         // No token, set loading to false without changing submissions
-        state = SubmissionState(submissions: state.submissions, isLoading: false, currentIndex: state.currentIndex);
+        state = SubmissionState(
+            submissions: state.submissions,
+            isLoading: false,
+            currentIndex: state.currentIndex,
+            customAudience: false,
+            runOnlyOncePerCustomer: false);
       }
     } else {
       // No token, set loading to false without changing submissions
-      state = SubmissionState(submissions: state.submissions, isLoading: false, currentIndex: state.currentIndex);
+      state = SubmissionState(
+          submissions: state.submissions,
+          isLoading: false,
+          currentIndex: state.currentIndex,
+          customAudience: false,
+          runOnlyOncePerCustomer: false);
     }
   }
 
@@ -92,12 +116,55 @@ class SubmissionViewModel extends StateNotifier<SubmissionState> {
 
   void updateCuttentIndex() {
     state = SubmissionState(
-        submissions: state.submissions, isLoading: state.isLoading, currentIndex: state.currentIndex + 1);
+      submissions: state.submissions,
+      isLoading: state.isLoading,
+      currentIndex: state.currentIndex + 1,
+      customAudience: state.customAudience,
+      runOnlyOncePerCustomer: state.runOnlyOncePerCustomer,
+    );
   }
 
   void addSubmission(Submission submission) {
     final updatedSubmissions = List<Submission>.from(state.submissions)..add(submission);
-    state = SubmissionState(submissions: updatedSubmissions, isLoading: state.isLoading);
+    state = SubmissionState(
+      submissions: updatedSubmissions,
+      isLoading: state.isLoading,
+      currentIndex: state.currentIndex,
+      runOnlyOncePerCustomer: state.runOnlyOncePerCustomer,
+      customAudience: state.customAudience,
+    );
+  }
+
+  void updatedSubmission(int index, Submission submission) {
+    final updatedSubmissions = List<Submission>.from(state.submissions);
+    updatedSubmissions[index] = submission;
+    state = SubmissionState(
+      submissions: updatedSubmissions,
+      isLoading: state.isLoading,
+      currentIndex: state.currentIndex,
+      runOnlyOncePerCustomer: state.runOnlyOncePerCustomer,
+      customAudience: state.customAudience,
+    );
+  }
+
+  updateRunOnlyOncePerCustomer(bool value) {
+    state = SubmissionState(
+      submissions: state.submissions,
+      isLoading: state.isLoading,
+      runOnlyOncePerCustomer: value,
+      currentIndex: state.currentIndex,
+      customAudience: state.customAudience,
+    );
+  }
+
+  updateCustomAudience(bool value) {
+    state = SubmissionState(
+      submissions: state.submissions,
+      isLoading: state.isLoading,
+      runOnlyOncePerCustomer: state.runOnlyOncePerCustomer,
+      currentIndex: state.currentIndex,
+      customAudience: value,
+    );
   }
 
   @override
@@ -150,6 +217,13 @@ class SubmissionState {
   final List<Submission> submissions;
   final bool isLoading;
   final int currentIndex;
+  bool runOnlyOncePerCustomer;
+  bool customAudience;
 
-  SubmissionState({required this.submissions, required this.isLoading, this.currentIndex = 0});
+  SubmissionState(
+      {required this.submissions,
+      required this.isLoading,
+      this.currentIndex = 0,
+      this.runOnlyOncePerCustomer = false,
+      this.customAudience = false});
 }

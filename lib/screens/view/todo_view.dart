@@ -185,13 +185,17 @@ class _CampaignFormState extends State<CampaignForm> {
                 const SizedBox(height: padding),
                 SwitchWithText(
                   label: "Run only once per customer",
-                  value: widget.ref.watch(readOnlyOncePerCustomer),
-                  onChanged: (value) => widget.ref.watch(readOnlyOncePerCustomer.notifier).state = value,
+                  value: widget.ref.watch(submissionViewModelProvider).runOnlyOncePerCustomer,
+                  onChanged: (value) {
+                    widget.ref.watch(submissionViewModelProvider.notifier).updateRunOnlyOncePerCustomer(value);
+                  },
                 ),
                 SwitchWithText(
                   label: "Custom audience",
-                  value: widget.ref.watch(customAudience),
-                  onChanged: (value) => widget.ref.watch(customAudience.notifier).state = value,
+                  value: widget.ref.watch(submissionViewModelProvider).customAudience,
+                  onChanged: (value) {
+                    widget.ref.watch(submissionViewModelProvider.notifier).updateCustomAudience(value);
+                  },
                 ),
                 const SizedBox(height: padding),
                 FittedBox(
@@ -218,6 +222,22 @@ class _CampaignFormState extends State<CampaignForm> {
                         onPressed: () {
                           final formValidation = widget.ref.read(submissionViewModelProvider.notifier).validate();
                           if (formValidation) {
+                            widget.ref.read(submissionViewModelProvider.notifier).updatedSubmission(
+                                  widget.ref.read(submissionViewModelProvider).currentIndex,
+                                  Submission(
+                                    email: widget.ref.read(submissionViewModelProvider.notifier).emailController.text,
+                                    from: widget.ref.read(submissionViewModelProvider.notifier).fromNameController.text,
+                                    subject:
+                                        widget.ref.read(submissionViewModelProvider.notifier).subjectController.text,
+                                    previewText: widget.ref
+                                        .read(submissionViewModelProvider.notifier)
+                                        .previewTextController
+                                        .text,
+                                    runOnlyOncePerCustomer:
+                                        widget.ref.read(submissionViewModelProvider).runOnlyOncePerCustomer,
+                                    customAudience: widget.ref.read(submissionViewModelProvider).customAudience,
+                                  ),
+                                );
                             final submissionsJson = widget.ref
                                 .read(submissionViewModelProvider)
                                 .submissions
@@ -251,14 +271,22 @@ class _CampaignFormState extends State<CampaignForm> {
                           if (formValidation) {
                             final currentIndex = widget.ref.read(submissionViewModelProvider).currentIndex;
                             if (currentIndex != formSteps.length - 1) {
-                              widget.ref.read(submissionViewModelProvider.notifier).addSubmission(Submission(
-                                    email: widget.ref.read(emailProvider),
-                                    from: widget.ref.read(fromNameProvider),
-                                    subject: widget.ref.read(campaignSubjectProvider),
-                                    previewText: widget.ref.read(previewTextProvider),
-                                    runOnlyOncePerCustomer: widget.ref.read(readOnlyOncePerCustomer),
-                                    customAudience: widget.ref.read(customAudience),
-                                  ));
+                              widget.ref.read(submissionViewModelProvider.notifier).addSubmission(
+                                    Submission(
+                                      email: widget.ref.read(submissionViewModelProvider.notifier).emailController.text,
+                                      from:
+                                          widget.ref.read(submissionViewModelProvider.notifier).fromNameController.text,
+                                      subject:
+                                          widget.ref.read(submissionViewModelProvider.notifier).subjectController.text,
+                                      previewText: widget.ref
+                                          .read(submissionViewModelProvider.notifier)
+                                          .previewTextController
+                                          .text,
+                                      runOnlyOncePerCustomer:
+                                          widget.ref.read(submissionViewModelProvider).runOnlyOncePerCustomer,
+                                      customAudience: widget.ref.read(submissionViewModelProvider).customAudience,
+                                    ),
+                                  );
 
                               widget.ref.read(submissionViewModelProvider.notifier).clearData();
 
