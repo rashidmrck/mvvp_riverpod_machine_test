@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:mvvp_riverpod_machine_test/const.dart';
 
 class SwitchWithText extends StatelessWidget {
   final String label;
@@ -21,7 +22,7 @@ class SwitchWithText extends StatelessWidget {
         Text(label),
         Switch(
           value: value,
-          activeTrackColor: Colors.deepOrange,
+          activeTrackColor: colorOrange,
           activeColor: Colors.white,
           onChanged: onChanged,
         ),

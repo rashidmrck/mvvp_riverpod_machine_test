@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvp_riverpod_machine_test/const.dart';
 
 class CustomButton extends StatelessWidget {
   final bool filled;
@@ -23,15 +24,15 @@ class CustomButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
-        backgroundColor: filled ? Colors.deepOrange : null,
+        backgroundColor: filled ? colorOrange : null,
         side: BorderSide(
-          color: borderSideColor ?? Colors.deepOrange,
+          color: borderSideColor ?? colorOrange,
         ),
       ),
       child: Text(
         text,
         style: TextStyle(
-          color: filled ? Colors.white : textColor ?? Colors.deepOrange,
+          color: filled ? Colors.white : textColor ?? colorOrange,
         ),
       ),
     );

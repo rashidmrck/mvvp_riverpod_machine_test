@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvp_riverpod_machine_test/const.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -40,7 +41,7 @@ class CustomTextField extends StatelessWidget {
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepOrange),
+              borderSide: BorderSide(color: colorOrange),
             ),
             hintText: hintText,
             helperText: helperText,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvp_riverpod_machine_test/const.dart';
 
 class CustomeListTile extends StatelessWidget {
   final String title;
@@ -20,9 +21,9 @@ class CustomeListTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
         radius: 20,
-        backgroundColor: selected ? Colors.deepOrange : Colors.grey,
+        backgroundColor: selected ? colorOrange : Colors.grey,
         child: CircleAvatar(
-          backgroundColor: selected ? Colors.deepOrange : Colors.white,
+          backgroundColor: selected ? colorOrange : Colors.white,
           radius: 18,
           child: Center(
             child: Text(
