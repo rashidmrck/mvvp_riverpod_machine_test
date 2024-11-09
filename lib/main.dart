@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mvvp_riverpod_machine_test/screens/view/todo_view.dart';
+import 'package:mvvp_riverpod_machine_test/screens/view/form_view.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeView(),
+      home: const HomeView(),
     );
   }
 }
