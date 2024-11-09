@@ -36,7 +36,6 @@ class SubmissionViewModel extends StateNotifier<SubmissionState> {
         List<dynamic> jsonData = jsonDecode(token);
         if (jsonData.isNotEmpty) {
           List<Submission> loadedSubmissions = jsonData.map((item) => Submission.fromJson(item)).toList();
-          // Update state with the loaded submissions and set isLoading to false
           state = SubmissionState(
             submissions: loadedSubmissions,
             isLoading: false,
@@ -58,7 +57,6 @@ class SubmissionViewModel extends StateNotifier<SubmissionState> {
               runOnlyOncePerCustomer: false);
         }
       } else {
-        // No token, set loading to false without changing submissions
         state = SubmissionState(
             submissions: state.submissions,
             isLoading: false,
@@ -67,7 +65,6 @@ class SubmissionViewModel extends StateNotifier<SubmissionState> {
             runOnlyOncePerCustomer: false);
       }
     } else {
-      // No token, set loading to false without changing submissions
       state = SubmissionState(
           submissions: state.submissions,
           isLoading: false,
