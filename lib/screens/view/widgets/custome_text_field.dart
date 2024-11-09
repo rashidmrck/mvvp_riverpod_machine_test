@@ -9,12 +9,10 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final int? maxLength;
   final Function(String)? onFieldSubmitted;
-  final Function(String)? onChanged;
   final TextEditingController? controller;
 
   const CustomTextField({
     required this.controller,
-    required this.onChanged,
     this.onFieldSubmitted,
     required this.label,
     required this.hintText,
@@ -51,7 +49,6 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
           maxLines: maxLines,
-          onChanged: onChanged,
           maxLength: maxLength,
           controller: controller,
         ),

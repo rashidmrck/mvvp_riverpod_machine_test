@@ -11,27 +11,6 @@ final submissionViewModelProvider = StateNotifierProvider<SubmissionViewModel, S
   return SubmissionViewModel();
 });
 
-// final counterProvider = StateProvider<int>((ref) => 0);
-
-StateProvider<String> campaignSubjectProvider = StateProvider<String>((ref) => '');
-final previewTextProvider = StateProvider<String>((ref) => '');
-final fromNameProvider = StateProvider<String>((ref) => '');
-final emailProvider = StateProvider<String>((ref) => '');
-final readOnlyOncePerCustomer = StateProvider<bool>((ref) => false);
-final customAudience = StateProvider<bool>((ref) => false);
-
-// Provider to manage form validation state
-final formValidationProvider = Provider<bool>((ref) {
-  final campaignSubject = ref.watch(campaignSubjectProvider);
-  final previewText = ref.watch(previewTextProvider);
-  final fromName = ref.watch(fromNameProvider);
-  final email = ref.watch(emailProvider);
-
-  // Basic validation logic
-  final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-  return campaignSubject.length >= 6 && previewText.length >= 6 && fromName.length >= 6 && emailRegExp.hasMatch(email);
-});
 
 class SubmissionViewModel extends StateNotifier<SubmissionState> {
   SubmissionViewModel() : super(SubmissionState(submissions: [], isLoading: true));

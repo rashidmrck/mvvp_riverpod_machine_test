@@ -172,7 +172,6 @@ class _CampaignFormState extends State<CampaignForm> {
                 CustomTextField(
                   label: "Campaign Subject",
                   hintText: "Enter Subject",
-                  onChanged: (value) => widget.ref.watch(campaignSubjectProvider.notifier).state = value,
                   controller: widget.ref.watch(submissionViewModelProvider.notifier).subjectController,
                 ),
                 const SizedBox(height: padding),
@@ -180,7 +179,6 @@ class _CampaignFormState extends State<CampaignForm> {
                   label: "Preview Text",
                   hintText: "Enter Preview Text",
                   helperText: "Keep this simple of 50 characters",
-                  onChanged: (value) => widget.ref.watch(previewTextProvider.notifier).state = value,
                   maxLines: 3,
                   maxLength: 50,
                   controller: widget.ref.watch(submissionViewModelProvider.notifier).previewTextController,
@@ -192,7 +190,6 @@ class _CampaignFormState extends State<CampaignForm> {
                       child: CustomTextField(
                         label: "\"From\" Name",
                         hintText: "From Anne",
-                        onChanged: (value) => widget.ref.watch(fromNameProvider.notifier).state = value,
                         controller: widget.ref.watch(submissionViewModelProvider.notifier).fromNameController,
                       ),
                     ),
@@ -203,7 +200,6 @@ class _CampaignFormState extends State<CampaignForm> {
                         hintText: "Anne@example.com",
                         maxLines: 1,
                         controller: widget.ref.watch(submissionViewModelProvider.notifier).emailController,
-                        onChanged: (value) => widget.ref.watch(emailProvider.notifier).state = value,
                         validator: (value) {
                           final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
                           return emailRegExp.hasMatch(value!) ? null : 'Enter a valid email';
@@ -321,13 +317,8 @@ class _CampaignFormState extends State<CampaignForm> {
                                   );
 
                               widget.ref.read(submissionViewModelProvider.notifier).clearData();
-
-                              widget.ref.read(campaignSubjectProvider.notifier).state = '';
-                              widget.ref.read(previewTextProvider.notifier).state = '';
-                              widget.ref.read(fromNameProvider.notifier).state = '';
-                              widget.ref.read(emailProvider.notifier).state = '';
-                              widget.ref.read(readOnlyOncePerCustomer.notifier).state = false;
-                              widget.ref.read(customAudience.notifier).state = false;
+                              widget.ref.read(submissionViewModelProvider).customAudience = false;
+                              widget.ref.read(submissionViewModelProvider).runOnlyOncePerCustomer = false;
                               widget.ref.read(submissionViewModelProvider.notifier).updateCuttentIndex();
                             }
                           } else {
